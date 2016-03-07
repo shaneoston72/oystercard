@@ -6,10 +6,16 @@ describe Oystercard do
   subject(:card) { described_class.new }
 
   context 'Oystercard balance' do
+
     describe '#card_balance' do
       it "should show the card's initial balance" do
-        new_card = card
         expect(card.balance).to eq 0
+      end
+    end
+
+    describe '#top_up' do
+      it "should top up the card" do
+        expect{ card.top_up 10 }.to change{ card.balance }.by 10
       end
     end
   end
