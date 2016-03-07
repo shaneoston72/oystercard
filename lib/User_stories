@@ -1,0 +1,17 @@
+User 3
+
+Nouns
+- customer
+- money
+- card
+
+verb
+- limit
+
+object      Message
+----------------------------
+customer    limit
+money
+card
+
+customer => limit <=> card <=> money
