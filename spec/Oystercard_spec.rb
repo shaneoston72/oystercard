@@ -30,4 +30,27 @@ describe Oystercard do
     end
   end
 
+  context 'Oystercard journey' do
+    describe '#touch_in' do
+      it 'should set in_journey to true' do
+        card.touch_in
+        expect(card.instance_variable_get(:@in_journey)).to eq true
+      end
+      it 'should prevent card in journey from touching in' do
+        card.touch_in
+        expect{ card.touch_in }.to raise_error "This card is already in journey."
+      end
+    end
+    describe '#touch_out' do
+      it 'should set in_journey to false' do
+        card.touch_in
+        card.touch_out
+        expect(card.instance_variable_get(:@in_journey)).to eq false
+      end
+      it 'should prevent card not in journey from touching out' do
+        expect{ card.touch_out }.to raise_error "This card is not in journey."
+      end
+    end
+  end
+
 end
