@@ -81,3 +81,18 @@ journey
 
 
 customer => pay <=> journey => have <=> minimum amount => card
+
+User story 7
+-----------------------------
+
+Nouns
+-Customer
+-journey
+-Card
+
+Verbs
+-Pay
+-Correct amount
+-Deducted
+
+customer => pay <=> deducted => correct amount => card
