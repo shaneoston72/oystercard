@@ -85,7 +85,7 @@ describe Oystercard do
 
     it '7.1 history stores journey date, stations and fare' do
       oystercard.tap_out("Hoxton")
-      expect(oystercard.journey_history).to eq "8/3/2016"=>["Shoreditch", "Hoxton"]
+      expect(oystercard.journey_history).to eq start: "Shoreditch", end: "Hoxton"
     end
   end
 

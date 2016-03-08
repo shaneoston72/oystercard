@@ -1,3 +1,6 @@
+require_relative 'station'
+require_relative 'journey'
+
 class Oystercard
   attr_reader :balance, :entry_station, :exit_station, :journey_history
   MAX_BALANCE = 90
@@ -27,12 +30,14 @@ class Oystercard
     @exit_station = station
     log
     @entry_station = nil
+  end
 
-
+  def pass_journey
+    #Journey.new(@entry_station, @exit_station)
   end
 
   def in_journey?
-    @entry_station == nil ? false : true
+    !!@entry_station
   end
 
 
@@ -43,8 +48,8 @@ class Oystercard
   end
 
   def log
-    key = "#{Time.now.day}/#{Time.now.month}/#{Time.now.year}"
-    @journey_history[key] = [@entry_station, @exit_station]
+    @journey_history[:start] = @entry_station
+    @journey_history[:end] = @exit_station
   end
 
 end

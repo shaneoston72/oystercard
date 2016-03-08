@@ -12,3 +12,7 @@ p 3
 p card.entry_station
 
 p card.in_journey?
+
+card.tap_out("Hoxton")
+
+p card.journey_history
