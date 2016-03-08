@@ -5,6 +5,7 @@ describe Oystercard do
 
   subject(:card) { described_class.new }
   let(:station) { double(:station)}
+  let(:station2) { double(:station)}
 
   context 'Oystercard balance' do
     describe '#card_balance' do
@@ -31,10 +32,7 @@ describe Oystercard do
     # end
   end
 
-  context 'Oystercard journey' do
-    # before do
-    #   card.top_up(5)
-    # end
+  context 'Oystercard actions' do
 
     describe '#touch_in' do
       it 'should set in_journey? to true' do
@@ -48,7 +46,6 @@ describe Oystercard do
         expect(card.entry_station).to eq station
       end
 
-      end
       it 'should prevent card in journey from touching in' do
         card.top_up(5)
         card.touch_in(station)
@@ -63,22 +60,46 @@ describe Oystercard do
       it 'should set in_journey? to false' do
         card.top_up(5)
         card.touch_in(station)
-        card.touch_out
+        card.touch_out(station)
         expect(card.instance_variable_get(:@entry_station)).to be_falsey
       end
       it 'should prevent card not in journey from touching out' do
-        expect{ card.touch_out }.to raise_error "This card is not in journey."
+        expect{ card.touch_out(station) }.to raise_error "This card is not in journey."
       end
       it 'should deduct card balance by minimum amount' do
         card.top_up(5)
         card.touch_in(station)
-        expect{ card.touch_out }.to change{ card.balance }.by -1
+        expect{ card.touch_out(station) }.to change{ card.balance }.by -1
       end
       it 'set entry station to nil' do
         card.top_up(5)
         card.touch_in(station)
-        card.touch_out
+        card.touch_out(station)
         expect(card.entry_station).to eq nil
       end
     end
+
+    context 'Oystercard journeys' do
+      describe 'should store journey history' do
+        it 'should return a hash' do
+          expect(card.journeys).to be_a(Hash)
+        end
+        it 'should increment journey_index by 1' do
+          card.top_up(5)
+          expect{ card.touch_in(station) }.to change{ card.journey_index }.by 1
+        end
+        it 'should add in station on touch in to journey history' do
+          card.top_up(5)
+          card.touch_in(station)
+          expect(card.journeys).to include( 1 => { :in => station } )
+        end
+        it 'should add out station on touch out to journey history' do
+          card.top_up(5)
+          card.touch_in(station)
+          card.touch_out(station2)
+          expect(card.journeys).to include( 1 => { :in => station, :out => station2 } )
+        end
+      end
+    end
   end
+end
