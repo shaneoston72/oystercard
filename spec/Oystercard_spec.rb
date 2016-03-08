@@ -4,6 +4,7 @@ require 'oystercard'
 describe Oystercard do
 
   subject(:card) { described_class.new }
+  let(:station) { double(:station)}
 
   context 'Oystercard balance' do
     describe '#card_balance' do
@@ -36,37 +37,48 @@ describe Oystercard do
     # end
 
     describe '#touch_in' do
-      it 'should set in_journey to true' do
+      it 'should set in_journey? to true' do
         card.top_up(5)
-        card.touch_in
-        expect(card.instance_variable_get(:@in_journey)).to eq true
+        card.touch_in(station)
+        expect(card.instance_variable_get(:@entry_station)).to be_truthy
+      end
+      it 'should set the entry station after touch in' do
+        card.top_up(5)
+        card.touch_in(station)
+        expect(card.entry_station).to eq station
+      end
+
       end
       it 'should prevent card in journey from touching in' do
         card.top_up(5)
-        card.touch_in
-        expect{ card.touch_in }.to raise_error "This card is already in journey."
+        card.touch_in(station)
+        expect{ card.touch_in(station) }.to raise_error "This card is already in journey."
       end
-      it 'shoud raise an error if balance is below mininum amount' do
-        expect { card.touch_in }.to raise_error "Card balance is too low."
+      it 'should raise an error if balance is below mininum amount' do
+        expect { card.touch_in(station) }.to raise_error "Card balance is too low."
       end
     end
 
     describe '#touch_out' do
-      it 'should set in_journey to false' do
+      it 'should set in_journey? to false' do
         card.top_up(5)
-        card.touch_in
+        card.touch_in(station)
         card.touch_out
-        expect(card.instance_variable_get(:@in_journey)).to eq false
+        expect(card.instance_variable_get(:@entry_station)).to be_falsey
       end
       it 'should prevent card not in journey from touching out' do
         expect{ card.touch_out }.to raise_error "This card is not in journey."
       end
       it 'should deduct card balance by minimum amount' do
         card.top_up(5)
-        card.touch_in
+        card.touch_in(station)
         expect{ card.touch_out }.to change{ card.balance }.by -1
+      end
+      it 'set entry station to nil' do
+        card.top_up(5)
+        card.touch_in(station)
+        card.touch_out
+        expect(card.entry_station).to eq nil
       end
     end
   end
-
-end
