@@ -14,7 +14,9 @@ customer    limit
 money
 card
 
-customer => limit <=> card => money
+
+customer => limit <=> card <=> money
+
 
 User story 4
 -----------------------------
@@ -39,3 +41,43 @@ fare
 
 
 customer <=> pay <=> journey => deduct <=> card
+
+
+User story 5
+-------------------------------
+
+Nouns
+-Barrier
+-Customer
+
+Verb
+-Get through
+-Touch in
+-Touch out
+
+Customer <=> barrier => touch in
+Customer <=> barrier => touch out
+
+
+User Story 6
+-----------------------------
+
+Nouns
+- Customer
+- journey
+- minimum amount
+
+
+Verbs
+- pay
+- have
+
+object        Message
+----------------------------
+customer      pay
+              have
+minimum amount
+journey
+
+
+customer => pay <=> journey => have <=> minimum amount => card

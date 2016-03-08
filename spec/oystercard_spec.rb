@@ -23,11 +23,28 @@ describe Oystercard do
     expect{oystercard.top_up(20)}.to raise_error
   end
 
+
   it 'should deduct money if the journey occurs' do
     balance1 = oystercard.balance
     oystercard.deduct(5)
     balance2 = oystercard.balance
     expect(balance2 < balance1).to be true
   end
-  
+
+  it 'should verify in journey' do
+     expect(oystercard).not_to be_in_journey
+   end
+
+  it 'should confirm touch in' do
+    oystercard.top_up(5)
+     expect(oystercard.touch_in).to eq true
+  end
+
+  it 'should confirm touch out' do
+    expect(oystercard.touch_out).to eq false
+  end
+
+  it 'should prevent journey if balance is under 1 pound' do
+    expect{oystercard.touch_in while true}.to raise_error(RuntimeError)
+  end
 end
