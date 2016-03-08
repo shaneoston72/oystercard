@@ -15,3 +15,42 @@ money
 card
 
 customer => limit <=> card <=> money
+
+User story 4
+-----------------------------
+
+Nouns
+- Customer
+- journey
+- card
+- fare
+
+Verb
+- pay
+- deduct
+
+
+object      Message
+--------------------------------
+Customer    pay
+card        deduct
+journey
+fare
+
+
+customer <=> pay <=> journey => deduct <=> card
+
+User story 5
+-------------------------------
+
+Nouns
+-Barrier
+-Customer
+
+Verb
+-Get through
+-Touch in
+-Touch out
+
+Customer <=> barrier => touch in
+Customer <=> barrier => touch out
