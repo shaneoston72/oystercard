@@ -96,3 +96,24 @@ Verbs
 -Deducted
 
 customer => pay <=> deducted => correct amount => card
+
+User Story 8
+--------------------------------
+
+Nouns
+- customer
+- journey
+- point of origin
+
+verbs
+- know
+
+
+object        Message
+--------------------------
+customer      know
+point of origin
+journey
+
+
+customer => know <=> point of origin => journey
