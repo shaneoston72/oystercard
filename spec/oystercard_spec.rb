@@ -32,7 +32,23 @@ describe Oystercard do
 
   describe '#in_journey?' do
     it '4.0 is not in journey until tapped in' do
-      expect(oystercard.in_journey).to be false
+      expect(oystercard).not_to be_in_journey
     end
   end
+
+  describe '#tap_in' do
+    it '5.0 is in journey' do
+      oystercard.tap_in
+      expect(oystercard).to be_in_journey
+    end
+  end
+
+  describe '#tap_out' do
+    it '6.0 is not in journey' do
+      oystercard.tap_in
+      oystercard.tap_out
+      expect(oystercard).not_to be_in_journey
+    end
+  end
+
 end

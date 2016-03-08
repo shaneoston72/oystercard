@@ -16,10 +16,21 @@ class Oystercard
     @balance -= fare
   end
 
-attr_reader :in_journey
+  def tap_in
+    @in_journey = true
+    # self.in_journey?
+  end
 
-private
+  def tap_out
+    @in_journey = false
+  end
 
+  # private
 
+  # attr_reader :in_journey
+
+  def in_journey?
+    @in_journey
+  end
 
 end
