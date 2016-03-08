@@ -14,6 +14,7 @@ describe Oystercard do
     end
 
     describe '#top_up' do
+
       it "should top up the card" do
         expect{ card.top_up 10 }.to change{ card.balance }.by 10
       end
@@ -22,6 +23,10 @@ describe Oystercard do
         max_balance = Oystercard::CARD_LIMIT
         card.top_up(max_balance)
         expect{ card.top_up 1 }.to raise_error "Card balance may not exceed £#{max_balance}"
+      end
+
+      it 'should reduce the balance on the card' do
+        expect{ card.deduct 3 }.to change{ card.balance }.by -3
       end
     end
   end
