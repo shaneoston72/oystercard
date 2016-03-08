@@ -13,9 +13,6 @@ class Oystercard
     @balance += amount
   end
 
-  def debit(fare)
-    @balance -= fare
-  end
 
   def tap_in
     raise "Balance less than £#{MIN_BALANCE} - NO ENTRY" if @balance < MIN_BALANCE
@@ -24,6 +21,7 @@ class Oystercard
   end
 
   def tap_out
+    deduct(2)
     @in_journey = false
   end
 
@@ -35,4 +33,10 @@ class Oystercard
     @in_journey
   end
 
+  private
+
+  def deduct(fare)
+    @balance -= fare
+  end
 end
+

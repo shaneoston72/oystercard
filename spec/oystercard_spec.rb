@@ -22,11 +22,11 @@ describe Oystercard do
     end
   end
 
-  describe '#debit' do
-    it '3.0 reduce balance by £5' do
+  describe '#deduct' do
+    it '3.0 reduce balance by £2' do
       oystercard.top_up(20)
-      oystercard.debit(5)
-      expect(oystercard.balance).to eq 15
+      oystercard.tap_out
+      expect(oystercard.balance).to eq 18
     end
   end
 
@@ -58,6 +58,13 @@ describe Oystercard do
       oystercard.tap_out
       expect(oystercard).not_to be_in_journey
     end
+
+    it '6.1 deducts minimum fare from balance' do
+      oystercard.top_up(20)
+      oystercard.tap_in
+      expect{oystercard.tap_out}.to change{oystercard.balance}.by(-2)
+    end
   end
+
 
 end
