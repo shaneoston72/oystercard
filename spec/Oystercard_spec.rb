@@ -23,11 +23,11 @@ describe Oystercard do
       end
     end
 
-    describe "#deduct" do
-      it 'should reduce the balance on the card' do
-        expect{ card.deduct 3 }.to change{ card.balance }.by -3
-      end
-    end
+    # describe "#deduct" do
+    #   it 'should reduce the balance on the card' do
+    #     expect{ card.deduct 3 }.to change{ card.balance }.by -3
+    #   end
+    # end
   end
 
   context 'Oystercard journey' do
@@ -60,6 +60,11 @@ describe Oystercard do
       end
       it 'should prevent card not in journey from touching out' do
         expect{ card.touch_out }.to raise_error "This card is not in journey."
+      end
+      it 'should deduct card balance by minimum amount' do
+        card.top_up(5)
+        card.touch_in
+        expect{ card.touch_out }.to change{ card.balance }.by -1
       end
     end
   end

@@ -15,10 +15,6 @@ class Oystercard
     @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def touch_in
     fail "This card is already in journey." if in_journey?
     fail "Card balance is too low." if below_min?
@@ -27,6 +23,7 @@ class Oystercard
 
   def touch_out
     fail "This card is not in journey." unless in_journey?
+    deduct(MIN_AMOUNT)
     @in_journey = false
   end
 
@@ -42,5 +39,9 @@ class Oystercard
 
     def below_min?
       @balance < MIN_AMOUNT
+    end
+
+    def deduct(amount)
+      @balance -= amount
     end
 end
