@@ -25,7 +25,7 @@ describe Oystercard do
   describe '#deduct' do
     it '3.0 reduce balance by £2' do
       oystercard.top_up(20)
-      oystercard.tap_out
+      oystercard.tap_out(station)
       expect(oystercard.balance).to eq 18
     end
   end
@@ -49,36 +49,53 @@ describe Oystercard do
       expect{oystercard.tap_in(station)}.to raise_error message
     end
 
-    it '5.2 stores the location of entry station' do
+    it '5.2 stores entry station' do
       oystercard.top_up(20)
       oystercard.tap_in("Shoreditch")
       expect(oystercard.entry_station).to eq "Shoreditch"
     end
-
   end
 
   describe '#tap_out' do
     it '6.0 is not in journey' do
       oystercard.top_up(20)
       oystercard.tap_in(station)
-      oystercard.tap_out
+      oystercard.tap_out(station)
       expect(oystercard).not_to be_in_journey
     end
 
     it '6.1 deducts minimum fare from balance' do
       oystercard.top_up(20)
       oystercard.tap_in(station)
-      expect{oystercard.tap_out}.to change{oystercard.balance}.by(-2)
+      expect{oystercard.tap_out(station)}.to change{oystercard.balance}.by(-2)
     end
 
-    it '6.2 tap out sets entry_station to nil' do
+    it '6.2 tap out sets entry station to nil' do
       oystercard.top_up(20)
       oystercard.tap_in("Shoreditch")
-      oystercard.tap_out
+      oystercard.tap_out(station)
       expect(oystercard.entry_station).to eq nil
     end
 
+    it '6.3 stores exit station' do
+      oystercard.top_up(20)
+      oystercard.tap_in("Shoreditch")
+      oystercard.tap_out("Hoxton")
+      expect(oystercard.exit_station).to eq "Hoxton"
+    end
   end
 
+  describe '#journey_history' do
+    it '7.0 is an empty history' do
+    expect(oystercard.journey_history.size).to eq 0
+    end
+
+    it '7.1 history stores journey date, stations and fare' do
+      oystercard.top_up(20)
+      oystercard.tap_in("Shoreditch")
+      oystercard.tap_out("Hoxton")
+      expect(oystercard.journey_history).to eq "8/3/2016"=>["Shoreditch", "Hoxton"]
+    end
+  end
 
 end
