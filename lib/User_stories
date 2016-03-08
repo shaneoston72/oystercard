@@ -14,4 +14,28 @@ customer    limit
 money
 card
 
-customer => limit <=> card <=> money
+customer => limit <=> card => money
+
+User story 4
+-----------------------------
+
+Nouns
+- Customer
+- journey
+- card
+- fare
+
+Verb
+- pay
+- deduct
+
+
+object      Message
+--------------------------------
+Customer    pay
+card        deduct
+journey
+fare
+
+
+customer <=> pay <=> journey => deduct <=> card

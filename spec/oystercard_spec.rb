@@ -22,4 +22,12 @@ describe Oystercard do
     oystercard.top_up(80)
     expect{oystercard.top_up(20)}.to raise_error
   end
+
+  it 'should deduct money if the journey occurs' do
+    balance1 = oystercard.balance
+    oystercard.deduct(5)
+    balance2 = oystercard.balance
+    expect(balance2 < balance1).to be true
+  end
+  
 end

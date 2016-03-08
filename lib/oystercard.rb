@@ -8,9 +8,13 @@ attr_reader :balance
 
   def top_up(amount)
     if amount > 90 || @balance + amount > 90
-      raise "exceeded max top up"      
+      raise "exceeded max top up"
     else
       @balance += amount
     end
+  end
+
+  def deduct(amount)
+    @balance -= amount
   end
 end
