@@ -38,13 +38,22 @@ describe Oystercard do
 
   describe '#tap_in' do
     it '5.0 is in journey' do
+      oystercard.top_up(20)
       oystercard.tap_in
       expect(oystercard).to be_in_journey
     end
+
+    it '5.1 if balance < 1 ERROR - INSUFFICIENT FUNDS' do
+      minimum = Oystercard::MIN_BALANCE
+      message = "Balance less than £#{minimum} - NO ENTRY"
+      expect{oystercard.tap_in}.to raise_error message
+    end
+
   end
 
   describe '#tap_out' do
     it '6.0 is not in journey' do
+      oystercard.top_up(20)
       oystercard.tap_in
       oystercard.tap_out
       expect(oystercard).not_to be_in_journey
