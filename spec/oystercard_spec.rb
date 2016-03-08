@@ -54,7 +54,7 @@ describe Oystercard do
     it 'should confirm touch in' do
       oystercard.top_up(5)
       oystercard.touch_in(station)
-       expect(oystercard.in_journey?).to be true
+      expect(oystercard.in_journey?).to be true
     end
 
     it 'should update the entry station' do
@@ -67,18 +67,27 @@ describe Oystercard do
       expect{oystercard.touch_in(station) while true}.to raise_error(RuntimeError)
     end
 
-
-
  end
 
   describe "#touch out" do
 
     it 'should confirm touch out' do
-      expect(oystercard.touch_out).to eq false
+      oystercard.touch_out(station)
+      expect(oystercard.in_journey).to be false
+    end
+
+    it 'should update the exit station' do
+      oystercard.touch_out(station)
+      expect(oystercard.exit_station).to eq station
     end
 
     it 'should deduct the correct amount for journey' do
-      expect { oystercard.touch_out }.to change{ oystercard.balance }.by (-1)
+      expect { oystercard.touch_out(station) }.to change{ oystercard.balance }.by (-1)
+    end
+
+    it 'should record journey history' do
+      oystercard.touch_out(station)
+      expect(oystercard.journey_history).to include(oystercard.current_journey)
     end
 
 end

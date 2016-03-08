@@ -117,3 +117,21 @@ journey
 
 
 customer => know <=> point of origin => journey
+
+User Story 9
+-------------------------------
+
+Nouns
+-Customer
+-Trips
+
+verbs
+-see
+-know
+
+object       message
+---------------------------
+customer     see <=> know
+trips
+
+customer <=> know <=> see <=> past trips
