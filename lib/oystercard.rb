@@ -1,6 +1,7 @@
 class Oystercard
 
   CARD_LIMIT = 90
+  MIN_AMOUNT = 1
 
   attr_reader :balance
 
@@ -20,6 +21,7 @@ class Oystercard
 
   def touch_in
     fail "This card is already in journey." if in_journey?
+    fail "Card balance is too low." if below_min?
     @in_journey = true
   end
 
@@ -36,5 +38,9 @@ class Oystercard
 
     def exceeds_max?(amount)
       amount + balance > CARD_LIMIT
+    end
+
+    def below_min?
+      @balance < MIN_AMOUNT
     end
 end
