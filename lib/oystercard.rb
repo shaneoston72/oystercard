@@ -11,7 +11,7 @@ class Oystercard
     @balance = 0
     @journeys = {}
     @journey_class = journey_class
-
+    @card_status = false
   end
 
   def top_up(amount)
@@ -22,14 +22,15 @@ class Oystercard
   def touch_in(station)
     fail "This card is already in journey." if in_journey?
     fail "Card balance is too low." if below_min?
+    @card_status = true
     @current_journey  = @journey_class.new station
   end
 
   def touch_out(station)
     fail "This card is not in journey." unless in_journey?
     deduct(MIN_AMOUNT)
-    # @entry_station = nil
-    # @journeys[journey_index][:out] = station
+    @card_status = false
+    @current_journey.end_journey(station)
   end
 
   def increment_journey_index
@@ -39,7 +40,7 @@ class Oystercard
   private
 
     def in_journey?
-      @status
+      @card_status
     end
 
     def exceeds_max?(amount)
