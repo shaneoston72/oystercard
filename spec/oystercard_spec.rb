@@ -9,13 +9,12 @@ describe Oystercard do
 
   describe '#balance' do
     it 'checks that new card has a balance' do
-      expect(card.balance).to eq 0
+      expect(subject.balance).to eq 0
     end
   end
 
   describe '#top_up' do
     it 'it adds 20 to balance' do
-      # card.top_up(20)
       expect(card.balance).to eq 20
     end
 
@@ -33,7 +32,6 @@ describe Oystercard do
 
   describe '#touch_in' do
     it 'card is in journey' do
-      # card.top_up(20)
       card.touch_in
       expect(card.in_journey?).to eq true
     end
@@ -41,13 +39,12 @@ describe Oystercard do
     it 'raises error when balance insufficient' do
 
       message = "Error insufficient funds"
-      expect { card.touch_in }.to raise_error message
+      expect{ subject.touch_in }.to raise_error message
     end
   end
 
   describe '#touch_out' do
     it 'card is not in journey' do
-      # card.top_up(20)
       card.touch_in
       card.touch_out
       expect(card.in_journey?).to eq false
