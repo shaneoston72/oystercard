@@ -3,10 +3,10 @@ require 'oystercard'
 
 describe Oystercard do
 
-  subject(:card) { described_class.new }
+  subject(:card) { described_class.new journey_class: journey }
   let(:station) { double(:station)}
   let(:station2) { double(:station)}
-  let(:journey) { double(:station) }
+  let(:journey) { double(:journey) }
 
   context 'Oystercard balance' do
     describe '#card_balance' do
@@ -38,35 +38,18 @@ describe Oystercard do
     describe '#touch_in' do
       # refactoring for journey class
       it 'should prevent card in journey from touching in' do
-        # card.top_up(5)
-        # card.touch_in(station)
         allow(card).to receive(:in_journey?).and_return(true)
         expect{ card.touch_in(station) }.to raise_error "This card is already in journey."
       end
       it 'should raise an error if balance is below mininum amount' do
         expect { card.touch_in(station) }.to raise_error "Card balance is too low."
       end
-      it 'creates a new isntance of Journey' do
-        allow(journey).to receive(:new).and_return(:trip)
-        allow(journey).t
-        journey = class_double("Journey", entry_station: "station")
-        expect(journey.entry_station).to eq "station"
-      end
 
-      # NOT REFACTORED
-      # it 'should set in_journey? to false' do
-      #   card.top_up(5)
-      #   card.touch_in(station)
-      #   expect(card.instance_variable_get(:@status)).to be_truthy
-      # end
-      it 'should set the entry station after touch in' do
-        card.top_up(5)
+      it 'creates a new instance of Journey' do
+        card.top_up(15)
+        expect(journey).to receive(:new).with(station)
         card.touch_in(station)
-        expect(card.entry_station).to eq station
       end
-
-
-
     end
 
     describe '#touch_out' do
@@ -80,15 +63,9 @@ describe Oystercard do
         expect{ card.touch_out(station) }.to raise_error "This card is not in journey."
       end
       it 'should deduct card balance by minimum amount' do
+        allow(card).to receive(:in_journey?).and_return(true)
         card.top_up(5)
-        card.touch_in(station)
         expect{ card.touch_out(station) }.to change{ card.balance }.by -1
-      end
-      it 'set entry station to nil' do
-        card.top_up(5)
-        card.touch_in(station)
-        card.touch_out(station)
-        expect(card.entry_station).to eq nil
       end
     end
 

@@ -17,14 +17,20 @@ describe Journey do
   end
 
   context 'Journey record' do
+
     describe '#begin' do
-      it 'returns a hash record with date/time and in' do
+
+      it 'returns the start of journey record with date/time and in' do
         allow(journey).to receive(:entry_station).and_return("station")
         begin_time = Time.now.strftime("%H:%M:%S")
         expect(journey.begin).to include( { begin_time => { :in => "station" } } )
       end
-      describe '#end' do
+    end
 
+    describe '#end' do
+      it 'returns the remainder of journey record' do
+        allow(journey).to receive(:end_station).and_return("station2")
+        expect(journey.end).to include( { begin_time => { :out => "station2" } } )
       end
     end
   end
