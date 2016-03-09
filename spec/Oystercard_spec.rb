@@ -35,10 +35,10 @@ describe Oystercard do
   context 'Oystercard actions' do
 
     describe '#touch_in' do
-      it 'should set in_journey? to true' do
+      it 'should set in_journey? to false' do
         card.top_up(5)
         card.touch_in(station)
-        expect(card.instance_variable_get(:@entry_station)).to be_truthy
+        expect(card.instance_variable_get(:@status)).to be_truthy
       end
       it 'should set the entry station after touch in' do
         card.top_up(5)

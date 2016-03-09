@@ -3,7 +3,7 @@ class Oystercard
   CARD_LIMIT = 90
   MIN_AMOUNT = 1
 
-  attr_reader :balance, :entry_station, :journeys, :journey_index
+  attr_reader :balance, :journeys, :journey_index
 
   def initialize
     @balance = 0
@@ -19,7 +19,7 @@ class Oystercard
   def touch_in(station)
     fail "This card is already in journey." if in_journey?
     fail "Card balance is too low." if below_min?
-    @entry_station = station
+    # @entry_station = station
     increment_journey_index
     @journeys[journey_index] = { :in => station }                                                  # does this violate SRP?
   end
@@ -38,7 +38,7 @@ class Oystercard
   private
 
     def in_journey?
-      !@entry_station.nil?
+      @status
     end
 
     def exceeds_max?(amount)
