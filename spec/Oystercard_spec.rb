@@ -6,6 +6,7 @@ describe Oystercard do
   subject(:card) { described_class.new }
   let(:station) { double(:station)}
   let(:station2) { double(:station)}
+  let(:journey) { double(:station) }
 
   context 'Oystercard balance' do
     describe '#card_balance' do
@@ -35,34 +36,46 @@ describe Oystercard do
   context 'Oystercard actions' do
 
     describe '#touch_in' do
-      it 'should set in_journey? to false' do
-        card.top_up(5)
-        card.touch_in(station)
-        expect(card.instance_variable_get(:@status)).to be_truthy
+      # refactoring for journey class
+      it 'should prevent card in journey from touching in' do
+        # card.top_up(5)
+        # card.touch_in(station)
+        allow(card).to receive(:in_journey?).and_return(true)
+        expect{ card.touch_in(station) }.to raise_error "This card is already in journey."
       end
+      it 'should raise an error if balance is below mininum amount' do
+        expect { card.touch_in(station) }.to raise_error "Card balance is too low."
+      end
+      it 'creates a new isntance of Journey' do
+        allow(journey).to receive(:new).and_return(:trip)
+        allow(journey).t
+        journey = class_double("Journey", entry_station: "station")
+        expect(journey.entry_station).to eq "station"
+      end
+
+      # NOT REFACTORED
+      # it 'should set in_journey? to false' do
+      #   card.top_up(5)
+      #   card.touch_in(station)
+      #   expect(card.instance_variable_get(:@status)).to be_truthy
+      # end
       it 'should set the entry station after touch in' do
         card.top_up(5)
         card.touch_in(station)
         expect(card.entry_station).to eq station
       end
 
-      it 'should prevent card in journey from touching in' do
-        card.top_up(5)
-        card.touch_in(station)
-        expect{ card.touch_in(station) }.to raise_error "This card is already in journey."
-      end
-      it 'should raise an error if balance is below mininum amount' do
-        expect { card.touch_in(station) }.to raise_error "Card balance is too low."
-      end
+
+
     end
 
     describe '#touch_out' do
+      # refactoring for journey class
       it 'should set in_journey? to false' do
-        card.top_up(5)
-        card.touch_in(station)
-        card.touch_out(station)
-        expect(card.instance_variable_get(:@entry_station)).to be_falsey
+        allow(card).to receive(:in_journey?).and_return(false)
+        expect{ card.touch_out(station) }.to raise_error "This card is not in journey."
       end
+      # NOT REFACTORED
       it 'should prevent card not in journey from touching out' do
         expect{ card.touch_out(station) }.to raise_error "This card is not in journey."
       end
@@ -81,9 +94,9 @@ describe Oystercard do
 
     context 'Oystercard journeys' do
       describe 'should store journey history' do
-        it 'should return a hash' do
-          expect(card.journeys).to be_a(Hash)
-        end
+        # it 'should return a hash' do
+        #   expect(card.journeys).to be_a(Hash)
+        # end
         it 'should increment journey_index by 1' do
           card.top_up(5)
           expect{ card.touch_in(station) }.to change{ card.journey_index }.by 1

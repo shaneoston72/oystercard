@@ -5,10 +5,12 @@ class Oystercard
 
   attr_reader :balance, :journeys, :journey_index
 
-  def initialize
+  def initialize(journey_class: Journey)
     @balance = 0
     @journeys = {}
     @journey_index = 0
+    @journey_class = journey_class
+    @current_journey = @journey_class.new
   end
 
   def top_up(amount)
@@ -19,9 +21,11 @@ class Oystercard
   def touch_in(station)
     fail "This card is already in journey." if in_journey?
     fail "Card balance is too low." if below_min?
+    # BEFORE REFACTOR
     # @entry_station = station
-    increment_journey_index
-    @journeys[journey_index] = { :in => station }                                                  # does this violate SRP?
+    # increment_journey_index
+    # @journeys[journey_index] = { :in => station }
+    # AFTER REFACTOR
   end
 
   def touch_out(station)
