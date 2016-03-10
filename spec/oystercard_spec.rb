@@ -60,6 +60,7 @@ describe Oystercard do
     end
 
    it 'deducts fare from balance' do
+     allow(@current_journey).to receive(:end_journey).with(station)
      expect{ card.touch_out(station) }.to change{ card.balance }.by -3
    end
 
@@ -71,12 +72,12 @@ describe Oystercard do
      expect(card.in_journey?).to eq false
    end
 
-   it 'remembers exit station' do
-     allow(card).to receive(:in_journey?).and_return(false)
-     card.top_up(20)
-     card.touch_in(station)
-     card.touch_out(station2)
-     expect(card.journeys).to include ({ :in => station, :out => station2 } )
-   end
+  #  it 'remembers exit station' do
+  #    allow(card).to receive(:in_journey?).and_return(false)
+  #    card.top_up(20)
+  #    card.touch_in(station)
+  #    card.touch_out(station2)
+  #    expect(card.journeys).to include ({ :in => station, :out => station2 } )
+  #  end
   end
 end

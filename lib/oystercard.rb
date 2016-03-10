@@ -22,16 +22,12 @@ class Oystercard
   def touch_in(station)
     fail "This card is in a journey" if in_journey?
     fail "Error insufficient funds" if @balance < MIN_LIMIT
-    #  need to tell Journey to start a journey here
-    # Journey.new(station)
-    @journeys << { :in => station }
+    @current_journey = Journey.new(station)
   end
 
   def touch_out(station)
     deduct(3)
-    @exit_station = station
-    # tell Journey to complete journey
-    @journeys.last[:out] = station
+    @current_journey.end_journey(station)
   end
 
   private

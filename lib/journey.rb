@@ -12,4 +12,8 @@ class Journey
     @journey_record[:in] = @entry_station
   end
 
+  def end_journey(station)
+    @journey_record[:out] = station
+  end
+
 end
