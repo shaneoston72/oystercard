@@ -1,11 +1,12 @@
 class Oystercard
-  attr_reader :balance
+  attr_reader :balance,  :journeys
 
   MAX_LIMIT = 90
   MIN_LIMIT = 1
 
   def initialize
     @balance = 0
+    @journeys = Array.new
   end
 
   def top_up(amount)
@@ -15,18 +16,19 @@ class Oystercard
   end
 
   def in_journey?
-    !!@in_journey
+    @journeys.select { |journey| journey.key?(:out) }.empty?
   end
 
-  def touch_in
+  def touch_in(station)
     error = "Error insufficient funds"
     raise error if @balance < MIN_LIMIT
-    @in_journey = true
+    @journeys << { :in => station }
   end
 
-  def touch_out
+  def touch_out(station)
     deduct(3)
-    @in_journey = false
+    @exit_station = station
+    @journeys.last[:out] = station
   end
 
   private
