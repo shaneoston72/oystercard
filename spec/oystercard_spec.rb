@@ -37,10 +37,10 @@ describe Oystercard do
     end
 
     it 'raises error when balance insufficient' do
-
       message = "Error insufficient funds"
       expect{ subject.touch_in }.to raise_error message
     end
+
   end
 
   describe '#touch_out' do
@@ -53,5 +53,6 @@ describe Oystercard do
    it 'deducts fare from balance' do
      expect{ card.touch_out }.to change{ card.balance }.by -3
    end
+
   end
 end
