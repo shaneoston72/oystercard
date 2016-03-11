@@ -1,13 +1,13 @@
 require 'byebug'
 require 'journey_log'
 
-describe JourneyLog do 
+describe JourneyLog do
 
 	let(:journey) {double :journey,  start_journey: nil }
 	let(:station) {double :station }
 	let(:station2) {double :station2}
 	let(:journey_class) { double(:journey_class, new: journey) }
-	subject(:journeylog) {described_class.new(journey_class)}	
+	subject(:journeylog) {described_class.new(journey_class)}
 
 	describe '#initialize' do
 
@@ -50,5 +50,5 @@ describe JourneyLog do
 		end
 
 	end
-	
+
 end

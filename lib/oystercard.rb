@@ -8,9 +8,9 @@ class Oystercard
   MAX_LIMIT = 90
   MIN_LIMIT = 1
 
-  def initialize(log = JourneyLog)
+  def initialize(log_class = JourneyLog)
     @balance = 0
-    @log = log.new
+    @log_class = log_class.new
   end
 
   def top_up(amount)
@@ -21,13 +21,13 @@ class Oystercard
 
   def touch_in(station)
     fail "Error insufficient funds" if @balance < MIN_LIMIT
-    deduct(@log.journey_history.last.fare) if !@log.journey_history.empty? && @log.journey_history.last.exit_station == nil
-    @log.start(station)
+    deduct(@log_class.journey_history.last.fare) if !@log_class.journey_history.empty? && @log_class.journey_history.last.exit_station == nil
+    @log_class.start(station)
   end
 
   def touch_out(station)
-    @log.finish(station)
-    deduct(@log.journey_history.last.fare)
+    @log_class.finish(station)
+    deduct(@log_class.journey_history.last.fare)
   end
 
   private
