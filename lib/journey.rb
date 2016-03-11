@@ -1,19 +1,28 @@
-require 'byebug'
 class Journey
 
-  attr_reader :entry_station, :journey_record
+  MINIMUM_FARE = 1
+  PENALTY_FARE = 6
 
-  def initialize(station)
-    @entry_station = station
-    @journey_record = Hash.new
+  attr_reader :entry_station, :exit_station
+
+  def initialize
+    @entry_station = nil
+    @exit_station = nil
   end
 
-  def start_journey
-    @journey_record[:in] = @entry_station
+  def start_journey(station)
+    @entry_station = station
   end
 
   def end_journey(station)
-    @journey_record[:out] = station
+    @exit_station = station
   end
 
+  def fare
+    complete? ? MINIMUM_FARE : PENALTY_FARE
+  end
+
+  def complete?
+    !@entry_station.nil? && !@exit_station.nil?
+  end
 end

@@ -5,34 +5,47 @@ require 'journey'
 
 describe Journey do
 
-  subject(:journey) { described_class.new(entry_station) }
-  let(:entry_station) { double(:station) }
-  let(:exit_station) { double(:station2) }
+  subject(:journey) { described_class.new }
+  let(:station) { double(:station) }
+  let(:station2) { double(:station2) }
 
 
   context 'initialization' do
     describe '#initialize' do
-      it 'returns the station name' do
-        expect(journey.entry_station).to eq entry_station
+      it 'returns the entry station name as nil' do
+        expect(journey.entry_station).to eq nil
+      end
+      it 'returns the exit station name as nil' do
+        expect(journey.exit_station).to eq nil
       end
     end
   end
 
-  context 'start a journey' do
+  context 'journey management' do
     describe '#start_journey' do
-      it 'creates the first half of the journey record' do
-        journey.start_journey
-        expect(journey.journey_record).to include( :in =>entry_station )
+      it 'sets entry station' do
+        journey.start_journey(station)
+        expect(journey.entry_station).to eq station
+      end
+    end
+    describe '#end_journey' do
+      it 'sets exit station' do
+        journey.end_journey(station2)
+        expect(journey.exit_station).to eq station2
       end
     end
   end
 
-  context 'complete a journey' do
-    describe '#end_journey' do
-      it 'adds the end of the journey to the journey record' do
-        journey.start_journey
-        journey.end_journey(exit_station)
-        expect(journey.journey_record).to include( :in=>entry_station, :out=>exit_station )
+  context 'calculate fare' do
+    describe '#fare' do
+      it 'calculates minimum fare for complete journey' do
+        journey.start_journey(station)
+        journey.end_journey(station2)
+        expect(journey.fare).to eq Journey::MINIMUM_FARE
+      end
+      it 'calculates penalty far for incomplete journey' do
+        journey.start_journey(station)
+        expect(journey.fare).to eq Journey::PENALTY_FARE
       end
     end
   end
